@@ -3,6 +3,7 @@ package com.github.alokagrawal8.rxfirebase.rxdatabase;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import com.google.firebase.database.DatabaseReference;
+import rx.Observable;
 
 import static com.github.alokagrawal8.rxfirebase.rxdatabase.Utils.checkNotNull;
 
@@ -18,5 +19,17 @@ import static com.github.alokagrawal8.rxfirebase.rxdatabase.Utils.checkNotNull;
     checkNotNull(child, "Child address is null or empty string");
     childReference = childReference.child(child);
     return this;
+  }
+
+  @NonNull public Observable<Boolean> setValue(final Object o) {
+    final CompletionListenerImpl listener = new CompletionListenerImpl();
+    childReference.setValue(o, listener);
+    return listener.getObservable();
+  }
+
+  @NonNull public Observable<Boolean> setValue(final Object o, final Object o1) {
+    final CompletionListenerImpl listener = new CompletionListenerImpl();
+    childReference.setValue(o, o1, listener);
+    return listener.getObservable();
   }
 }
