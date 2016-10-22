@@ -15,6 +15,7 @@ android {
 }
 
 dependencies {
+  compile deps.annotations
   compile deps.rxjava
   compile deps.firebase
   compile deps.database
