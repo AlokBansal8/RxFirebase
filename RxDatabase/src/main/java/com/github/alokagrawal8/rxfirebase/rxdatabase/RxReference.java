@@ -36,6 +36,12 @@ import static com.github.alokagrawal8.rxfirebase.rxdatabase.Utils.checkNotNull;
     return listener.getObservable();
   }
 
+  @NonNull public Observable<Boolean> setPriority(final Object o) {
+    final CompletionListenerImpl listener = new CompletionListenerImpl();
+    childReference.setPriority(o, listener);
+    return listener.getObservable();
+  }
+
   @NonNull public Observable<DataSnapshot> getValueEventListener() {
     if (valueEventListener == null) {
       valueEventListener = new ValueEventListenerImpl(false);
