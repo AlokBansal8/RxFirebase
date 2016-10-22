@@ -4,8 +4,10 @@ import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.MutableData;
 import java.util.Map;
 import rx.Observable;
+import rx.functions.Action1;
 
 import static com.github.alokagrawal8.rxfirebase.rxdatabase.Utils.checkNotEmpty;
 
@@ -68,6 +70,19 @@ import static com.github.alokagrawal8.rxfirebase.rxdatabase.Utils.checkNotEmpty;
     final CompletionListenerImpl listener = new CompletionListenerImpl();
     reference.removeValue(listener);
     return listener.getObservable();
+  }
+
+  @NonNull public Observable<TransactionResult> runTransaction(@NonNull final Action1<MutableData> action) {
+    final TransactionHandlerImpl handler = new TransactionHandlerImpl(action);
+    reference.runTransaction(handler);
+    return handler.getObservable();
+  }
+
+  @NonNull
+  public Observable<TransactionResult> runTransaction(@NonNull final Action1<MutableData> action, final boolean b) {
+    final TransactionHandlerImpl handler = new TransactionHandlerImpl(action);
+    reference.runTransaction(handler, b);
+    return handler.getObservable();
   }
 
   @NonNull public Observable<DataSnapshot> getValueEventListener() {
