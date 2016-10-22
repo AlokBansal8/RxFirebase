@@ -57,4 +57,10 @@ import static com.github.alokagrawal8.rxfirebase.rxdatabase.Utils.checkNotNull;
     }
     return childEventListener.getObservable();
   }
+
+  @NonNull public Observable<Boolean> removeValue() {
+    final CompletionListenerImpl listener = new CompletionListenerImpl();
+    childReference.removeValue(listener);
+    return listener.getObservable();
+  }
 }
