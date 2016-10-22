@@ -3,6 +3,7 @@ package com.github.alokagrawal8.rxfirebase.rxdatabase;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import java.util.Iterator;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 import rx.subjects.SerializedSubject;
@@ -24,7 +25,13 @@ final class ValueEventListenerImpl implements ValueEventListener {
   }
 
   @Override public void onDataChange(final DataSnapshot dataSnapshot) {
-    subject.onNext(dataSnapshot);
+    final Iterable<DataSnapshot> iterable = dataSnapshot.getChildren();
+    if (iterable == null) {
+      subject.onNext(dataSnapshot);
+    } else {
+      final Iterator<DataSnapshot> iterator = iterable.iterator();
+      while (iterator.hasNext()) subject.onNext(iterator.next());
+    }
     if (isSingleEventListener) subject.onCompleted();
   }
 
