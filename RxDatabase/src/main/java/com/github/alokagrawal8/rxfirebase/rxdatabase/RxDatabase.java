@@ -31,4 +31,16 @@ import com.google.firebase.database.FirebaseDatabase;
   FirebaseDatabase getDatabase() {
     return database;
   }
+
+  public void purgeOutstandingWrites() {
+    database.purgeOutstandingWrites();
+  }
+
+  public void goOnline() {
+    database.goOnline();
+  }
+
+  public void goOffline() {
+    database.goOffline();
+  }
 }
