@@ -1,0 +1,25 @@
+apply plugin: 'com.android.library'
+
+android {
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
+
+  compileOptions {
+    sourceCompatibility rootProject.ext.javaVersion
+    targetCompatibility rootProject.ext.javaVersion
+  }
+
+  defaultConfig {
+    minSdkVersion rootProject.ext.minSdkVersion
+  }
+}
+
+dependencies {
+  compile deps.rxjava
+  compile deps.firebase
+  compile deps.database
+
+  testCompile deps.junit
+  testCompile deps.assertj
+  testCompile deps.robolectric
+}
