@@ -10,35 +10,36 @@ import com.google.firebase.database.Logger.Level;
 
 import static com.github.alokagrawal8.rxfirebase.rxdatabase.Utils.checkNotEmpty;
 
-@SuppressWarnings({ "WeakerAccess", "unused" }) public final class RxDatabase {
+@SuppressWarnings({ "WeakerAccess", "unused" }) public class RxDatabase {
 
   private static RxDatabase instance;
 
   private final FirebaseDatabase database;
   private final ArrayMap<DatabaseReference, RxReference> referenceMap;
 
-  private RxDatabase() {
-    database = FirebaseDatabase.getInstance();
+  private RxDatabase(@NonNull final FirebaseDatabase database) {
+    this.database = database;
     referenceMap = new ArrayMap<>();
   }
 
-  @CheckResult @NonNull public static RxDatabase getInstance() {
-    if (instance == null) instance = new RxDatabase();
+  @CheckResult @NonNull
+  public static RxDatabase getInstance(@NonNull final FirebaseDatabase database) {
+    if (instance == null) instance = new RxDatabase(database);
     return instance;
   }
 
   @CheckResult @NonNull public RxReference getReference() {
-    return new RxReference(this, database.getReference());
+    return get(database.getReference());
   }
 
   @CheckResult @NonNull public RxReference getReference(@NonNull final String childPath) {
     checkNotEmpty(childPath, "Child address is empty string");
-    return new RxReference(this, database.getReference(childPath));
+    return get(database.getReference(childPath));
   }
 
   @CheckResult @NonNull public RxReference getReferenceFromUrl(@NonNull final String url) {
     checkNotEmpty(url, "Url is empty string");
-    return new RxReference(this, database.getReferenceFromUrl(url));
+    return get(database.getReferenceFromUrl(url));
   }
 
   @NonNull public RxDatabase setPersistenceEnabled(final boolean enabled) {
