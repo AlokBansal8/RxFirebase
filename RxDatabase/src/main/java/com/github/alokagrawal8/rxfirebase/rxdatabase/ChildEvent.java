@@ -15,7 +15,8 @@ import com.google.firebase.database.DataSnapshot;
   private final DataSnapshot dataSnapshot;
   private final String string;
 
-  ChildEvent(@ChildEventType final int type, @NonNull final DataSnapshot dataSnapshot, @Nullable final String string) {
+  ChildEvent(@ChildEventType final int type, @NonNull final DataSnapshot dataSnapshot,
+      @Nullable final String string) {
     this.type = type;
     this.dataSnapshot = dataSnapshot;
     this.string = string;

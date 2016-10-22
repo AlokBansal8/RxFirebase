@@ -62,7 +62,8 @@ import static com.github.alokagrawal8.rxfirebase.rxdatabase.Utils.checkNotEmpty;
     database.setLogLevel(level);
   }
 
-  void addToMap(@NonNull final DatabaseReference reference, @NonNull final RxReference rxReference) {
+  void addToMap(@NonNull final DatabaseReference reference,
+      @NonNull final RxReference rxReference) {
     referenceMap.put(reference, rxReference);
   }
 

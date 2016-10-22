@@ -11,7 +11,8 @@ import rx.subjects.Subject;
 
 final class ChildEventListenerImpl implements ChildEventListener {
 
-  private final Subject<ChildEvent, ChildEvent> subject = new SerializedSubject<>(BehaviorSubject.<ChildEvent>create());
+  private final Subject<ChildEvent, ChildEvent> subject =
+      new SerializedSubject<>(BehaviorSubject.<ChildEvent>create());
 
   @Override public void onChildAdded(final DataSnapshot dataSnapshot, final String s) {
     subject.onNext(new ChildEvent(ChildEvent.ADDED, dataSnapshot, s));

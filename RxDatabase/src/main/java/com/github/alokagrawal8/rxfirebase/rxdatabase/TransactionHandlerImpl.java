@@ -30,7 +30,8 @@ final class TransactionHandlerImpl implements Transaction.Handler {
     return Transaction.success(mutableData);
   }
 
-  @Override public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+  @Override
+  public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
     if (databaseError == null) {
       subject.onNext(new TransactionResult(dataSnapshot, b));
       subject.onCompleted();

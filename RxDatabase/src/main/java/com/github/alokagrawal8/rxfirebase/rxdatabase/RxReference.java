@@ -72,14 +72,16 @@ import static com.github.alokagrawal8.rxfirebase.rxdatabase.Utils.checkNotEmpty;
     return listener.getObservable();
   }
 
-  @NonNull public Observable<TransactionResult> runTransaction(@NonNull final Action1<MutableData> action) {
+  @NonNull
+  public Observable<TransactionResult> runTransaction(@NonNull final Action1<MutableData> action) {
     final TransactionHandlerImpl handler = new TransactionHandlerImpl(action);
     reference.runTransaction(handler);
     return handler.getObservable();
   }
 
   @NonNull
-  public Observable<TransactionResult> runTransaction(@NonNull final Action1<MutableData> action, final boolean b) {
+  public Observable<TransactionResult> runTransaction(@NonNull final Action1<MutableData> action,
+      final boolean b) {
     final TransactionHandlerImpl handler = new TransactionHandlerImpl(action);
     reference.runTransaction(handler, b);
     return handler.getObservable();
