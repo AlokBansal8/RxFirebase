@@ -19,11 +19,16 @@ import com.google.firebase.database.FirebaseDatabase;
     return instance;
   }
 
-  FirebaseDatabase getDatabase() {
-    return database;
-  }
-
   @CheckResult @NonNull public RxReference getReference() {
     return new RxReference(this);
+  }
+
+  @NonNull public RxDatabase setPersistenceEnabled(final boolean enabled) {
+    database.setPersistenceEnabled(enabled);
+    return this;
+  }
+
+  FirebaseDatabase getDatabase() {
+    return database;
   }
 }
