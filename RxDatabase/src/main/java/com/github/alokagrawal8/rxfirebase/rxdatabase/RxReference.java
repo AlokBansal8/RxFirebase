@@ -12,6 +12,7 @@ import static com.github.alokagrawal8.rxfirebase.rxdatabase.Utils.checkNotNull;
 
   private DatabaseReference childReference;
   private ValueEventListenerImpl valueEventListener;
+  private ChildEventListenerImpl childEventListener;
 
   RxReference(@NonNull final RxDatabase database) {
     childReference = database.getDatabase().getReference();
@@ -47,5 +48,13 @@ import static com.github.alokagrawal8.rxfirebase.rxdatabase.Utils.checkNotNull;
     final ValueEventListenerImpl listener = new ValueEventListenerImpl(true);
     childReference.addListenerForSingleValueEvent(listener);
     return listener.getObservable();
+  }
+
+  @NonNull public Observable<ChildEvent> getChildEventListener() {
+    if (childEventListener == null) {
+      childEventListener = new ChildEventListenerImpl();
+      childReference.addChildEventListener(childEventListener);
+    }
+    return childEventListener.getObservable();
   }
 }
