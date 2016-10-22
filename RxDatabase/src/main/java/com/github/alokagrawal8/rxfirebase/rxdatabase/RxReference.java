@@ -63,4 +63,9 @@ import static com.github.alokagrawal8.rxfirebase.rxdatabase.Utils.checkNotNull;
     childReference.removeValue(listener);
     return listener.getObservable();
   }
+
+  public void removeListeners() {
+    if (valueEventListener != null) childReference.removeEventListener(valueEventListener);
+    if (childEventListener != null) childReference.removeEventListener(childEventListener);
+  }
 }
