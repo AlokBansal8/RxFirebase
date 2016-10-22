@@ -2,7 +2,6 @@ package com.github.alokagrawal8.rxfirebase.rxdatabase;
 
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.MutableData;
 import java.util.Map;
@@ -11,17 +10,10 @@ import rx.functions.Action1;
 
 import static com.github.alokagrawal8.rxfirebase.rxdatabase.Utils.checkNotEmpty;
 
-@SuppressWarnings({ "WeakerAccess", "unused" }) public final class RxReference {
-
-  private final RxDatabase database;
-  private final DatabaseReference reference;
-
-  private ValueEventListenerImpl valueEventListener;
-  private ChildEventListenerImpl childEventListener;
+@SuppressWarnings({ "WeakerAccess", "unused" }) public final class RxReference extends RxQuery {
 
   RxReference(@NonNull final RxDatabase database, @NonNull final DatabaseReference reference) {
-    this.database = database;
-    this.reference = reference;
+    super(database, reference);
     database.addToMap(reference, this);
   }
 
@@ -85,33 +77,6 @@ import static com.github.alokagrawal8.rxfirebase.rxdatabase.Utils.checkNotEmpty;
     final TransactionHandlerImpl handler = new TransactionHandlerImpl(action);
     reference.runTransaction(handler, b);
     return handler.getObservable();
-  }
-
-  @NonNull public Observable<DataSnapshot> getValueEventListener() {
-    if (valueEventListener == null) {
-      valueEventListener = new ValueEventListenerImpl(false);
-      reference.addValueEventListener(valueEventListener);
-    }
-    return valueEventListener.getObservable();
-  }
-
-  @NonNull public Observable<DataSnapshot> getSingleValueEventListener() {
-    final ValueEventListenerImpl listener = new ValueEventListenerImpl(true);
-    reference.addListenerForSingleValueEvent(listener);
-    return listener.getObservable();
-  }
-
-  @NonNull public Observable<ChildEvent> getChildEventListener() {
-    if (childEventListener == null) {
-      childEventListener = new ChildEventListenerImpl();
-      reference.addChildEventListener(childEventListener);
-    }
-    return childEventListener.getObservable();
-  }
-
-  public void removeListeners() {
-    if (valueEventListener != null) reference.removeEventListener(valueEventListener);
-    if (childEventListener != null) reference.removeEventListener(childEventListener);
   }
 
   public RxDatabase getDatabase() {
