@@ -1,16 +1,14 @@
-RxFirebase
-----------
+# RxFirebase
+
+[![Build Status](https://travis-ci.org/AlokBansal8/RxFirebase.svg?branch=master)](https://travis-ci.org/AlokBansal8/RxFirebase)
 
 RxJava wrapper for Firebase for Android
 
-Usage
------
+## Usage
 
-Download
---------
+## Download
 
-License
--------
+## License
 
     Copyright 2016 Alok Bansal
 
