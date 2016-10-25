@@ -1,27 +1,36 @@
 package com.github.alokagrawal8.rxfirebase.rxdatabase;
 
+import android.support.annotation.NonNull;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import java.util.Iterator;
 import rx.Observable;
-import rx.subjects.BehaviorSubject;
+import rx.functions.Action0;
+import rx.subjects.PublishSubject;
 import rx.subjects.SerializedSubject;
 import rx.subjects.Subject;
 
 final class ValueEventListenerImpl implements ValueEventListener {
 
-  private final Subject<DataSnapshot, DataSnapshot> subject =
-      new SerializedSubject<>(BehaviorSubject.<DataSnapshot>create());
-
+  private final Subject<DataSnapshot, DataSnapshot> subject;
+  private final DatabaseReference reference;
   private final boolean isSingleEventListener;
 
-  ValueEventListenerImpl(final boolean isSingleEventListener) {
+  ValueEventListenerImpl(@NonNull final DatabaseReference reference,
+      final boolean isSingleEventListener) {
+    subject = new SerializedSubject<>(PublishSubject.<DataSnapshot>create());
+    this.reference = reference;
     this.isSingleEventListener = isSingleEventListener;
   }
 
-  Observable<DataSnapshot> getObservable() {
-    return subject;
+  @NonNull Observable<DataSnapshot> getObservable() {
+    return subject.doOnUnsubscribe(new Action0() {
+      @Override public void call() {
+        reference.removeEventListener(ValueEventListenerImpl.this);
+      }
+    });
   }
 
   @Override public void onDataChange(final DataSnapshot dataSnapshot) {

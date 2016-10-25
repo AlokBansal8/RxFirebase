@@ -12,39 +12,27 @@ import static com.github.alokagrawal8.rxfirebase.rxdatabase.Utils.checkNotEmpty;
   protected final RxDatabase database;
   protected final DatabaseReference reference;
 
-  private ValueEventListenerImpl valueEventListener;
-  private ChildEventListenerImpl childEventListener;
-
   RxQuery(@NonNull final RxDatabase database, @NonNull final DatabaseReference reference) {
     this.database = database;
     this.reference = reference;
   }
 
   @NonNull public Observable<DataSnapshot> getValueEventListener() {
-    if (valueEventListener == null) {
-      valueEventListener = new ValueEventListenerImpl(false);
-      reference.addValueEventListener(valueEventListener);
-    }
-    return valueEventListener.getObservable();
+    final ValueEventListenerImpl listener = new ValueEventListenerImpl(reference, false);
+    reference.addValueEventListener(listener);
+    return listener.getObservable();
   }
 
   @NonNull public Observable<DataSnapshot> getSingleValueEventListener() {
-    final ValueEventListenerImpl listener = new ValueEventListenerImpl(true);
+    final ValueEventListenerImpl listener = new ValueEventListenerImpl(reference, true);
     reference.addListenerForSingleValueEvent(listener);
     return listener.getObservable();
   }
 
   @NonNull public Observable<ChildEvent> getChildEventListener() {
-    if (childEventListener == null) {
-      childEventListener = new ChildEventListenerImpl();
-      reference.addChildEventListener(childEventListener);
-    }
-    return childEventListener.getObservable();
-  }
-
-  public void removeListeners() {
-    if (valueEventListener != null) reference.removeEventListener(valueEventListener);
-    if (childEventListener != null) reference.removeEventListener(childEventListener);
+    final ChildEventListenerImpl listener = new ChildEventListenerImpl(reference);
+    reference.addChildEventListener(listener);
+    return listener.getObservable();
   }
 
   public void keepSynced(final boolean keepSynced) {
