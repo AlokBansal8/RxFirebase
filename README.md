@@ -6,10 +6,10 @@
 RxJava wrapper for Firebase for Android
 
 ## Usage
-1. [RxDatabase](https://github.com/AlokBansal8/RxFirebase/tree/master/RxDatabase#usage)
+1. [rx-database](https://github.com/AlokBansal8/RxFirebase/tree/master/rx-database#usage)
 
 ## Download
-1. [RxDatabase](https://github.com/AlokBansal8/RxFirebase/tree/master/RxDatabase#download)
+1. [rx-database](https://github.com/AlokBansal8/RxFirebase/tree/master/rx-database#download)
 
 ## License
 
