@@ -66,27 +66,29 @@ artifacts {
   archives androidJavadocsJar
 }
 
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
+if (project.rootProject.file('local.properties').exists()) {
+  Properties properties = new Properties()
+  properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-bintray {
-  user = properties.getProperty("bintray.user")
-  key = properties.getProperty("bintray.apikey")
+  bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
 
-  configurations = ['archives']
+    configurations = ['archives']
 
-  dryRun = true //Whether to run this as dry-run, without deploying
-  publish = false //If version should be auto published after an upload
+    dryRun = true //Whether to run this as dry-run, without deploying
+    publish = false //If version should be auto published after an upload
 
-  pkg {
-    repo = 'maven'
-    name = POM_NAME
-    licenses = ["Apache-2.0"]
-    vcsUrl = POM_SCM_CONNECTION
+    pkg {
+      repo = 'maven'
+      name = POM_NAME
+      licenses = ["Apache-2.0"]
+      vcsUrl = POM_SCM_CONNECTION
 
-    version {
-      desc = POM_VERSION
-      released = new Date()
+      version {
+        desc = POM_VERSION
+        released = new Date()
+      }
     }
   }
 }
