@@ -1,1 +1,1 @@
-include ':rx-database'
+include ':rx-database', ':rx-auth'
