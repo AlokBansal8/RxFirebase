@@ -75,8 +75,8 @@ bintray {
 
   configurations = ['archives']
 
-  dryRun = false //Whether to run this as dry-run, without deploying
-  publish = true //If version should be auto published after an upload
+  dryRun = true //Whether to run this as dry-run, without deploying
+  publish = false //If version should be auto published after an upload
 
   pkg {
     repo = 'maven'
