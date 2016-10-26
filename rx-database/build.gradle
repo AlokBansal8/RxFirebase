@@ -12,6 +12,11 @@ android {
   defaultConfig {
     minSdkVersion rootProject.ext.minSdkVersion
   }
+
+  lintOptions {
+    textReport true
+    textOutput 'stdout'
+  }
 }
 
 dependencies {
@@ -24,3 +29,5 @@ dependencies {
   testCompile deps.assertj
   testCompile deps.mockito
 }
+
+apply from: rootProject.file('gradle/bintray-upload.gradle')
