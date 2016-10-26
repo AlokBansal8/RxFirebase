@@ -1,12 +1,15 @@
 # RxFirebase
 
+[![GitHub license](https://img.shields.io/github/license/dcendents/android-maven-gradle-plugin.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![Build Status](https://travis-ci.org/AlokBansal8/RxFirebase.svg?branch=master)](https://travis-ci.org/AlokBansal8/RxFirebase)
 
 RxJava wrapper for Firebase for Android
 
 ## Usage
+1. [RxDatabase](https://github.com/AlokBansal8/RxFirebase/tree/master/RxDatabase#usage)
 
 ## Download
+1. [RxDatabase](https://github.com/AlokBansal8/RxFirebase/tree/master/RxDatabase#download)
 
 ## License
 
