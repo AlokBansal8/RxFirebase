@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 
+version = POM_VERSION
+
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
   buildToolsVersion rootProject.ext.buildToolsVersion
