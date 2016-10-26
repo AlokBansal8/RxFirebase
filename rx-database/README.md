@@ -10,7 +10,7 @@ RxJava wrapper for Firebase Reatime Database for Android
 #### Gradle
 Add the following line to your build.gradle file.
 ```groovy
-compile 'com.github.alokagrawal8.rxfirebase:rx-database:0.0.1@aar'
+compile 'com.github.alokagrawal8.rxfirebase:rx-database:0.1.0@aar'
 ```
 
 ## Usage
