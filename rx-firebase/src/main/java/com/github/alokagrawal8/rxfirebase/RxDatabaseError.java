@@ -1,4 +1,4 @@
-package com.github.alokagrawal8.rxfirebase.rxdatabase;
+package com.github.alokagrawal8.rxfirebase;
 
 import android.support.annotation.NonNull;
 import com.google.firebase.database.DatabaseError;
@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseError;
   @NonNull private final DatabaseError error;
 
   RxDatabaseError(@NonNull final DatabaseError error) {
+    super(error.getMessage());
     this.error = error;
   }
 
