@@ -2,14 +2,19 @@
 
 [![GitHub license](https://img.shields.io/github/license/dcendents/android-maven-gradle-plugin.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![Build Status](https://travis-ci.org/AlokBansal8/RxFirebase.svg?branch=master)](https://travis-ci.org/AlokBansal8/RxFirebase)
+[![Download](https://api.bintray.com/packages/alokbansal8/maven/RxFirebaseDatabase/images/download.svg)](https://bintray.com/alokbansal8/maven/RxFirebaseDatabase/_latestVersion)
 
 RxJava wrapper for Firebase for Android
 
 ## Usage
-1. [rx-database](https://github.com/AlokBansal8/RxFirebase/tree/master/rx-database#usage)
+To be added
 
 ## Download
-1. [rx-database](https://github.com/AlokBansal8/RxFirebase/tree/master/rx-database#download)
+#### Gradle
+Add the following line to your build.gradle file.
+```groovy
+compile 'com.github.alokagrawal8.rxfirebase:rx-firebase:0.2.0@aar'
+```
 
 ## License
 
