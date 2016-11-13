@@ -7,7 +7,7 @@ import rx.subjects.ReplaySubject;
 import rx.subjects.SerializedSubject;
 import rx.subjects.Subject;
 
-class CompletionListenerImpl implements DatabaseReference.CompletionListener {
+final class CompletionListenerImpl implements DatabaseReference.CompletionListener {
 
   private final Subject<Boolean, Boolean> subject;
 
