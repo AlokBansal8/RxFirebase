@@ -1,4 +1,4 @@
-package com.github.alokagrawal8.rxfirebase;
+package com.github.alokagrawal8.rxfirebase.database;
 
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

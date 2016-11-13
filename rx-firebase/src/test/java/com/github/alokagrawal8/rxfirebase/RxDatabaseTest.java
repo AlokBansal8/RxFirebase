@@ -2,6 +2,11 @@ package com.github.alokagrawal8.rxfirebase;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import com.github.alokagrawal8.rxfirebase.database.ChildEvent;
+import com.github.alokagrawal8.rxfirebase.database.ChildEventType;
+import com.github.alokagrawal8.rxfirebase.database.RxDatabase;
+import com.github.alokagrawal8.rxfirebase.database.RxDatabaseError;
+import com.github.alokagrawal8.rxfirebase.database.TransactionResult;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,14 +55,14 @@ import static org.mockito.Mockito.when;
         listener.onComplete(null, reference);
         return null;
       }
-    }).when(reference).setValue(any(), any(CompletionListenerImpl.class));
+    }).when(reference).setValue(any(), any(CompletionListener.class));
     doAnswer(new Answer<Object>() {
       @Override public Object answer(InvocationOnMock invocation) throws Throwable {
         CompletionListener listener = invocation.getArgument(2);
         listener.onComplete(null, reference);
         return null;
       }
-    }).when(reference).setValue(any(), any(), any(CompletionListenerImpl.class));
+    }).when(reference).setValue(any(), any(), any(CompletionListener.class));
 
     TestSubscriber<Boolean> test1 = new TestSubscriber<>(1);
     RxDatabase.setValue(reference, "a").subscribe(test1);
@@ -75,14 +80,14 @@ import static org.mockito.Mockito.when;
         listener.onComplete(error, reference);
         return null;
       }
-    }).when(reference).setValue(any(), any(CompletionListenerImpl.class));
+    }).when(reference).setValue(any(), any(CompletionListener.class));
     doAnswer(new Answer<Object>() {
       @Override public Object answer(InvocationOnMock invocation) throws Throwable {
         CompletionListener listener = invocation.getArgument(2);
         listener.onComplete(error, reference);
         return null;
       }
-    }).when(reference).setValue(any(), any(), any(CompletionListenerImpl.class));
+    }).when(reference).setValue(any(), any(), any(CompletionListener.class));
 
     TestSubscriber<Boolean> test1 = new TestSubscriber<>(1);
     RxDatabase.setValue(reference, "a").subscribe(test1);
@@ -100,7 +105,7 @@ import static org.mockito.Mockito.when;
         listener.onComplete(null, reference);
         return null;
       }
-    }).when(reference).setPriority(any(), any(CompletionListenerImpl.class));
+    }).when(reference).setPriority(any(), any(CompletionListener.class));
 
     TestSubscriber<Boolean> test = new TestSubscriber<>(1);
     RxDatabase.setPriority(reference, "a").subscribe(test);
@@ -114,7 +119,7 @@ import static org.mockito.Mockito.when;
         listener.onComplete(error, reference);
         return null;
       }
-    }).when(reference).setPriority(any(), any(CompletionListenerImpl.class));
+    }).when(reference).setPriority(any(), any(CompletionListener.class));
 
     TestSubscriber<Boolean> test = new TestSubscriber<>(1);
     RxDatabase.setPriority(reference, "a").subscribe(test);
@@ -129,7 +134,7 @@ import static org.mockito.Mockito.when;
         return null;
       }
     }).when(reference)
-        .updateChildren(anyMapOf(String.class, Object.class), any(CompletionListenerImpl.class));
+        .updateChildren(anyMapOf(String.class, Object.class), any(CompletionListener.class));
 
     TestSubscriber<Boolean> test = new TestSubscriber<>(1);
     RxDatabase.updateChildren(reference, new HashMap<String, Object>()).subscribe(test);
@@ -144,7 +149,7 @@ import static org.mockito.Mockito.when;
         return null;
       }
     }).when(reference)
-        .updateChildren(anyMapOf(String.class, Object.class), any(CompletionListenerImpl.class));
+        .updateChildren(anyMapOf(String.class, Object.class), any(CompletionListener.class));
 
     TestSubscriber<Boolean> test = new TestSubscriber<>(1);
     RxDatabase.updateChildren(reference, new HashMap<String, Object>()).subscribe(test);
@@ -158,7 +163,7 @@ import static org.mockito.Mockito.when;
         listener.onComplete(null, reference);
         return null;
       }
-    }).when(reference).removeValue(any(CompletionListenerImpl.class));
+    }).when(reference).removeValue(any(CompletionListener.class));
 
     TestSubscriber<Boolean> test = new TestSubscriber<>(1);
     RxDatabase.removeValue(reference).subscribe(test);
@@ -172,7 +177,7 @@ import static org.mockito.Mockito.when;
         listener.onComplete(error, reference);
         return null;
       }
-    }).when(reference).removeValue(any(CompletionListenerImpl.class));
+    }).when(reference).removeValue(any(CompletionListener.class));
 
     TestSubscriber<Boolean> test = new TestSubscriber<>(1);
     RxDatabase.removeValue(reference).subscribe(test);
@@ -481,7 +486,8 @@ import static org.mockito.Mockito.when;
     test.assertTerminalEvent();
     test.assertUnsubscribed();
     test.assertError(RxDatabaseError.class);
-    final Throwable throwable = (Throwable) test.getOnErrorEvents().get(0);
+    final RxDatabaseError throwable = (RxDatabaseError) test.getOnErrorEvents().get(0);
     assertThat(throwable.getMessage()).isEqualTo(ERROR_MESSAGE);
+    assertThat(throwable.getError()).isEqualTo(error);
   }
 }

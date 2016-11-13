@@ -1,4 +1,4 @@
-package com.github.alokagrawal8.rxfirebase;
+package com.github.alokagrawal8.rxfirebase.database;
 
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
@@ -10,7 +10,7 @@ import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Action1;
 
-@SuppressWarnings({ "WeakerAccess", "unused" }) public final class RxDatabase {
+public final class RxDatabase {
 
   private RxDatabase() {
   }

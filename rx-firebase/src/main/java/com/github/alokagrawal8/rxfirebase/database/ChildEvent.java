@@ -1,10 +1,10 @@
-package com.github.alokagrawal8.rxfirebase;
+package com.github.alokagrawal8.rxfirebase.database;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.google.firebase.database.DataSnapshot;
 
-@SuppressWarnings({ "WeakerAccess", "unused" }) public final class ChildEvent {
+public final class ChildEvent {
 
   public static final byte ADDED = 1;
   public static final byte CHANGED = 2;

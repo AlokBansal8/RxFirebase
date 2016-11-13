@@ -1,10 +1,9 @@
-package com.github.alokagrawal8.rxfirebase;
+package com.github.alokagrawal8.rxfirebase.database;
 
 import android.support.annotation.NonNull;
 import com.google.firebase.database.DatabaseError;
 
-@SuppressWarnings({ "WeakerAccess", "unused" }) public final class RxDatabaseError
-    extends Throwable {
+public final class RxDatabaseError extends Throwable {
 
   @NonNull private final DatabaseError error;
 

@@ -1,4 +1,4 @@
-package com.github.alokagrawal8.rxfirebase;
+package com.github.alokagrawal8.rxfirebase.database;
 
 import android.support.annotation.NonNull;
 import com.google.firebase.database.DataSnapshot;
