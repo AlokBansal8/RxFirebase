@@ -1,5 +1,6 @@
 package com.github.alokagrawal8.rxfirebase;
 
+import android.support.annotation.NonNull;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,8 +22,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyMapOf;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.when;
 
-public final class RxDatabaseTest {
+@SuppressWarnings("ThrowableResultOfMethodCallIgnored") public final class RxDatabaseTest {
+
+  private final String ERROR_MESSAGE = "Test Error";
 
   @Mock DatabaseError error;
   @Mock DataSnapshot snapshot;
@@ -30,6 +34,7 @@ public final class RxDatabaseTest {
 
   @Before public void setup() {
     MockitoAnnotations.initMocks(this);
+    when(error.getMessage()).thenReturn(ERROR_MESSAGE);
   }
 
   @Test public void testSetValue() {
@@ -50,17 +55,11 @@ public final class RxDatabaseTest {
 
     TestSubscriber<Boolean> test1 = new TestSubscriber<>(1);
     RxDatabase.setValue(reference, "a").subscribe(test1);
-    test1.assertNoErrors();
-    test1.assertValueCount(1);
-    test1.assertValue(Boolean.TRUE);
-    test1.unsubscribe();
+    withoutErrorSubscriberAssertions(test1);
 
     TestSubscriber<Boolean> test2 = new TestSubscriber<>(1);
     RxDatabase.setValue(reference, "a", "b").subscribe(test2);
-    test2.assertNoErrors();
-    test2.assertValueCount(1);
-    test2.assertValue(Boolean.TRUE);
-    test2.unsubscribe();
+    withoutErrorSubscriberAssertions(test2);
   }
 
   @Test public void testSetValueWithError() {
@@ -81,15 +80,11 @@ public final class RxDatabaseTest {
 
     TestSubscriber<Boolean> test1 = new TestSubscriber<>(1);
     RxDatabase.setValue(reference, "a").subscribe(test1);
-    test1.assertTerminalEvent();
-    test1.assertError(RxDatabaseError.class);
-    test1.unsubscribe();
+    withErrorSubscriberAssertions(test1);
 
     TestSubscriber<Boolean> test2 = new TestSubscriber<>(1);
     RxDatabase.setValue(reference, "a", "b").subscribe(test2);
-    test2.assertTerminalEvent();
-    test2.assertError(RxDatabaseError.class);
-    test2.unsubscribe();
+    withErrorSubscriberAssertions(test2);
   }
 
   @Test public void testSetPriority() {
@@ -103,10 +98,7 @@ public final class RxDatabaseTest {
 
     TestSubscriber<Boolean> test = new TestSubscriber<>(1);
     RxDatabase.setPriority(reference, "a").subscribe(test);
-    test.assertNoErrors();
-    test.assertValueCount(1);
-    test.assertValue(Boolean.TRUE);
-    test.unsubscribe();
+    withoutErrorSubscriberAssertions(test);
   }
 
   @Test public void testSetPriorityWithError() {
@@ -120,9 +112,7 @@ public final class RxDatabaseTest {
 
     TestSubscriber<Boolean> test = new TestSubscriber<>(1);
     RxDatabase.setPriority(reference, "a").subscribe(test);
-    test.assertTerminalEvent();
-    test.assertError(RxDatabaseError.class);
-    test.unsubscribe();
+    withErrorSubscriberAssertions(test);
   }
 
   @Test public void testUpdateChildren() {
@@ -137,10 +127,7 @@ public final class RxDatabaseTest {
 
     TestSubscriber<Boolean> test = new TestSubscriber<>(1);
     RxDatabase.updateChildren(reference, new HashMap<String, Object>()).subscribe(test);
-    test.assertNoErrors();
-    test.assertValueCount(1);
-    test.assertValue(Boolean.TRUE);
-    test.unsubscribe();
+    withoutErrorSubscriberAssertions(test);
   }
 
   @Test public void testUpdateChildrenWithError() {
@@ -155,9 +142,7 @@ public final class RxDatabaseTest {
 
     TestSubscriber<Boolean> test = new TestSubscriber<>(1);
     RxDatabase.updateChildren(reference, new HashMap<String, Object>()).subscribe(test);
-    test.assertTerminalEvent();
-    test.assertError(RxDatabaseError.class);
-    test.unsubscribe();
+    withErrorSubscriberAssertions(test);
   }
 
   @Test public void testRemoveValue() {
@@ -171,10 +156,7 @@ public final class RxDatabaseTest {
 
     TestSubscriber<Boolean> test = new TestSubscriber<>(1);
     RxDatabase.removeValue(reference).subscribe(test);
-    test.assertNoErrors();
-    test.assertValueCount(1);
-    test.assertValue(Boolean.TRUE);
-    test.unsubscribe();
+    withoutErrorSubscriberAssertions(test);
   }
 
   @Test public void testRemoveValueWithError() {
@@ -188,9 +170,7 @@ public final class RxDatabaseTest {
 
     TestSubscriber<Boolean> test = new TestSubscriber<>(1);
     RxDatabase.removeValue(reference).subscribe(test);
-    test.assertTerminalEvent();
-    test.assertError(RxDatabaseError.class);
-    test.unsubscribe();
+    withErrorSubscriberAssertions(test);
   }
 
   @Test public void testRunTransaction() {
@@ -215,33 +195,21 @@ public final class RxDatabaseTest {
       @Override public void call(MutableData mutableData) {
       }
     }).subscribe(test1);
-    test1.assertNoErrors();
-    test1.assertValueCount(1);
-    assertThat(test1.getOnNextEvents().get(0).getDataSnapshot()).isEqualTo(snapshot);
-    assertThat(test1.getOnNextEvents().get(0).isComplete()).isTrue();
-    test1.unsubscribe();
+    withoutErrorTransactionSubscriberAssertions(test1, true);
 
     TestSubscriber<TransactionResult> test2 = new TestSubscriber<>(1);
     RxDatabase.runTransaction(reference, new Action1<MutableData>() {
       @Override public void call(MutableData mutableData) {
       }
     }, true).subscribe(test2);
-    test2.assertNoErrors();
-    test2.assertValueCount(1);
-    assertThat(test2.getOnNextEvents().get(0).getDataSnapshot()).isEqualTo(snapshot);
-    assertThat(test2.getOnNextEvents().get(0).isComplete()).isTrue();
-    test2.unsubscribe();
+    withoutErrorTransactionSubscriberAssertions(test2, true);
 
     TestSubscriber<TransactionResult> test3 = new TestSubscriber<>(1);
     RxDatabase.runTransaction(reference, new Action1<MutableData>() {
       @Override public void call(MutableData mutableData) {
       }
     }, false).subscribe(test3);
-    test3.assertNoErrors();
-    test3.assertValueCount(1);
-    assertThat(test3.getOnNextEvents().get(0).getDataSnapshot()).isEqualTo(snapshot);
-    assertThat(test3.getOnNextEvents().get(0).isComplete()).isFalse();
-    test3.unsubscribe();
+    withoutErrorTransactionSubscriberAssertions(test3, false);
   }
 
   @Test public void testRunTransactionWithError() {
@@ -266,26 +234,48 @@ public final class RxDatabaseTest {
       @Override public void call(MutableData mutableData) {
       }
     }).subscribe(test1);
-    test1.assertTerminalEvent();
-    test1.assertError(RxDatabaseError.class);
-    test1.unsubscribe();
+    withErrorSubscriberAssertions(test1);
 
     TestSubscriber<TransactionResult> test2 = new TestSubscriber<>(1);
     RxDatabase.runTransaction(reference, new Action1<MutableData>() {
       @Override public void call(MutableData mutableData) {
       }
     }, true).subscribe(test2);
-    test2.assertTerminalEvent();
-    test2.assertError(RxDatabaseError.class);
-    test2.unsubscribe();
+    withErrorSubscriberAssertions(test2);
 
     TestSubscriber<TransactionResult> test3 = new TestSubscriber<>(1);
     RxDatabase.runTransaction(reference, new Action1<MutableData>() {
       @Override public void call(MutableData mutableData) {
       }
     }, false).subscribe(test3);
-    test3.assertTerminalEvent();
-    test3.assertError(RxDatabaseError.class);
-    test3.unsubscribe();
+    withErrorSubscriberAssertions(test3);
+  }
+
+  private void withoutErrorSubscriberAssertions(@NonNull final TestSubscriber<Boolean> test) {
+    test.assertTerminalEvent();
+    test.assertUnsubscribed();
+    test.assertCompleted();
+    test.assertNoErrors();
+    test.assertValueCount(1);
+    test.assertValue(Boolean.TRUE);
+  }
+
+  private void withoutErrorTransactionSubscriberAssertions(
+      @NonNull final TestSubscriber<TransactionResult> test, boolean value) {
+    test.assertTerminalEvent();
+    test.assertUnsubscribed();
+    test.assertCompleted();
+    test.assertNoErrors();
+    test.assertValueCount(1);
+    assertThat(test.getOnNextEvents().get(0).getDataSnapshot()).isEqualTo(snapshot);
+    assertThat(test.getOnNextEvents().get(0).isComplete()).isEqualTo(value);
+  }
+
+  private void withErrorSubscriberAssertions(@NonNull final TestSubscriber test) {
+    test.assertTerminalEvent();
+    test.assertUnsubscribed();
+    test.assertError(RxDatabaseError.class);
+    final Throwable throwable = (Throwable) test.getOnErrorEvents().get(0);
+    assertThat(throwable.getMessage()).isEqualTo(ERROR_MESSAGE);
   }
 }

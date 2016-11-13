@@ -7,7 +7,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import rx.Observable;
 import rx.functions.Action0;
-import rx.subjects.PublishSubject;
+import rx.subjects.ReplaySubject;
 import rx.subjects.SerializedSubject;
 import rx.subjects.Subject;
 
@@ -17,7 +17,7 @@ final class ChildEventListenerImpl implements ChildEventListener {
   private final DatabaseReference reference;
 
   ChildEventListenerImpl(@NonNull final DatabaseReference reference) {
-    subject = new SerializedSubject<>(PublishSubject.<ChildEvent>create());
+    subject = new SerializedSubject<>(ReplaySubject.<ChildEvent>create());
     this.reference = reference;
   }
 

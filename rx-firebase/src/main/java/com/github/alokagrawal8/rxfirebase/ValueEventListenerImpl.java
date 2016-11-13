@@ -6,11 +6,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import java.util.Iterator;
-import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.subjects.PublishSubject;
+import rx.subjects.ReplaySubject;
 import rx.subjects.SerializedSubject;
 import rx.subjects.Subject;
 
@@ -22,7 +20,7 @@ final class ValueEventListenerImpl implements ValueEventListener {
 
   ValueEventListenerImpl(@NonNull final DatabaseReference reference,
       final boolean isSingleEventListener) {
-    subject = new SerializedSubject<>(PublishSubject.<DataSnapshot>create());
+    subject = new SerializedSubject<>(ReplaySubject.<DataSnapshot>create());
     this.reference = reference;
     this.isSingleEventListener = isSingleEventListener;
   }
@@ -51,13 +49,7 @@ final class ValueEventListenerImpl implements ValueEventListener {
       final Iterator<DataSnapshot> iterator = iterable.iterator();
       while (iterator.hasNext()) subject.onNext(iterator.next());
     }
-    if (isSingleEventListener) {
-      Observable.timer(10, TimeUnit.MILLISECONDS).subscribe(new Action1<Long>() {
-        @Override public void call(Long aLong) {
-          subject.onCompleted();
-        }
-      });
-    }
+    if (isSingleEventListener) subject.onCompleted();
   }
 
   @Override public void onCancelled(@NonNull final DatabaseError databaseError) {
