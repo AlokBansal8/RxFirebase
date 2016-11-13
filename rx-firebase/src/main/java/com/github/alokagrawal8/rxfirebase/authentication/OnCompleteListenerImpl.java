@@ -21,11 +21,8 @@ final class OnCompleteListenerImpl<T> implements OnSuccessListener<T>, OnFailure
   }
 
   @Override public void onSuccess(@NonNull final T t) {
-    if (t instanceof Void) {
-      subject.onCompleted();
-    } else {
-      subject.onNext(t);
-    }
+    if (!(t instanceof Void)) subject.onNext(t);
+    subject.onCompleted();
   }
 
   @Override public void onFailure(@NonNull final Exception e) {
