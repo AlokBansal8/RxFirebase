@@ -17,14 +17,14 @@ final class AuthStateListenerImpl implements AuthStateListener {
     subject = new SerializedSubject<>(BehaviorSubject.<FirebaseAuth>create());
   }
 
-  Observable<FirebaseAuth> getObservable() {
+  Observable<FirebaseAuth> getObservable(@NonNull final FirebaseAuth auth) {
     return subject.doOnSubscribe(new Action0() {
       @Override public void call() {
-        FirebaseAuth.getInstance().addAuthStateListener(AuthStateListenerImpl.this);
+        auth.addAuthStateListener(AuthStateListenerImpl.this);
       }
     }).doOnUnsubscribe(new Action0() {
       @Override public void call() {
-        FirebaseAuth.getInstance().removeAuthStateListener(AuthStateListenerImpl.this);
+        auth.removeAuthStateListener(AuthStateListenerImpl.this);
       }
     });
   }

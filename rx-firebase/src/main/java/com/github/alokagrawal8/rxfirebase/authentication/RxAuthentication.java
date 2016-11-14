@@ -12,22 +12,23 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import rx.Observable;
 import rx.functions.Action0;
 
-@SuppressWarnings("unused") public final class RxAuthentication {
+@SuppressWarnings({ "unused", "WeakerAccess" }) public final class RxAuthentication {
 
   private RxAuthentication() {
   }
 
-  @NonNull @CheckResult public static Observable<FirebaseAuth> getAuthListener() {
-    return new AuthStateListenerImpl().getObservable();
+  @NonNull @CheckResult
+  public static Observable<FirebaseAuth> getAuthListener(@NonNull final FirebaseAuth auth) {
+    return new AuthStateListenerImpl().getObservable(auth);
   }
 
-  @NonNull @CheckResult public static Observable<AuthResult> signInWithCredential(
+  @NonNull @CheckResult
+  public static Observable<AuthResult> signInWithCredential(@NonNull final FirebaseAuth auth,
       @NonNull final AuthCredential credential) {
     final OnCompleteListenerImpl<AuthResult> listener = new OnCompleteListenerImpl<>();
     return listener.getObservable().doOnSubscribe(new Action0() {
       @Override public void call() {
-        FirebaseAuth.getInstance()
-            .signInWithCredential(credential)
+        auth.signInWithCredential(credential)
             .addOnSuccessListener(listener)
             .addOnFailureListener(listener);
       }
@@ -35,12 +36,12 @@ import rx.functions.Action0;
   }
 
   @NonNull @CheckResult
-  public static Observable<AuthResult> signInWithCustomToken(@NonNull final String token) {
+  public static Observable<AuthResult> signInWithCustomToken(@NonNull final FirebaseAuth auth,
+      @NonNull final String token) {
     final OnCompleteListenerImpl<AuthResult> listener = new OnCompleteListenerImpl<>();
     return listener.getObservable().doOnSubscribe(new Action0() {
       @Override public void call() {
-        FirebaseAuth.getInstance()
-            .signInWithCustomToken(token)
+        auth.signInWithCustomToken(token)
             .addOnSuccessListener(listener)
             .addOnFailureListener(listener);
       }
@@ -48,39 +49,35 @@ import rx.functions.Action0;
   }
 
   @NonNull @CheckResult
-  public static Observable<AuthResult> signInWithEmailAndPassword(@NonNull final String email,
+  public static Observable<AuthResult> signInWithEmailAndPassword(@NonNull final FirebaseAuth auth,
+      @NonNull final String email, @NonNull final String password) {
+    final OnCompleteListenerImpl<AuthResult> listener = new OnCompleteListenerImpl<>();
+    return listener.getObservable().doOnSubscribe(new Action0() {
+      @Override public void call() {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnSuccessListener(listener)
+            .addOnFailureListener(listener);
+      }
+    });
+  }
+
+  @NonNull @CheckResult
+  public static Observable<AuthResult> signInAnonymously(@NonNull final FirebaseAuth auth) {
+    final OnCompleteListenerImpl<AuthResult> listener = new OnCompleteListenerImpl<>();
+    return listener.getObservable().doOnSubscribe(new Action0() {
+      @Override public void call() {
+        auth.signInAnonymously().addOnSuccessListener(listener).addOnFailureListener(listener);
+      }
+    });
+  }
+
+  @NonNull @CheckResult public static Observable<AuthResult> createUserWithEmailAndPassword(
+      @NonNull final FirebaseAuth auth, @NonNull final String email,
       @NonNull final String password) {
     final OnCompleteListenerImpl<AuthResult> listener = new OnCompleteListenerImpl<>();
     return listener.getObservable().doOnSubscribe(new Action0() {
       @Override public void call() {
-        FirebaseAuth.getInstance()
-            .signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener(listener)
-            .addOnFailureListener(listener);
-      }
-    });
-  }
-
-  @NonNull @CheckResult public static Observable<AuthResult> signInAnonymously() {
-    final OnCompleteListenerImpl<AuthResult> listener = new OnCompleteListenerImpl<>();
-    return listener.getObservable().doOnSubscribe(new Action0() {
-      @Override public void call() {
-        FirebaseAuth.getInstance()
-            .signInAnonymously()
-            .addOnSuccessListener(listener)
-            .addOnFailureListener(listener);
-      }
-    });
-  }
-
-  @NonNull @CheckResult
-  public static Observable<AuthResult> createUserWithEmailAndPassword(@NonNull final String email,
-      @NonNull final String password) {
-    final OnCompleteListenerImpl<AuthResult> listener = new OnCompleteListenerImpl<>();
-    return listener.getObservable().doOnSubscribe(new Action0() {
-      @Override public void call() {
-        FirebaseAuth.getInstance()
-            .createUserWithEmailAndPassword(email, password)
+        auth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener(listener)
             .addOnFailureListener(listener);
       }
@@ -88,12 +85,11 @@ import rx.functions.Action0;
   }
 
   @NonNull @CheckResult public static Observable<ProviderQueryResult> fetchProvidersForEmail(
-      @NonNull final String email) {
+      @NonNull final FirebaseAuth auth, @NonNull final String email) {
     final OnCompleteListenerImpl<ProviderQueryResult> listener = new OnCompleteListenerImpl<>();
     return listener.getObservable().doOnSubscribe(new Action0() {
       @Override public void call() {
-        FirebaseAuth.getInstance()
-            .fetchProvidersForEmail(email)
+        auth.fetchProvidersForEmail(email)
             .addOnSuccessListener(listener)
             .addOnFailureListener(listener);
       }
@@ -101,12 +97,12 @@ import rx.functions.Action0;
   }
 
   @NonNull @CheckResult
-  public static Observable<Void> sendPasswordResetEmail(@NonNull final String email) {
+  public static Observable<Void> sendPasswordResetEmail(@NonNull final FirebaseAuth auth,
+      @NonNull final String email) {
     final OnCompleteListenerImpl<Void> listener = new OnCompleteListenerImpl<>();
     return listener.getObservable().doOnSubscribe(new Action0() {
       @Override public void call() {
-        FirebaseAuth.getInstance()
-            .sendPasswordResetEmail(email)
+        auth.sendPasswordResetEmail(email)
             .addOnSuccessListener(listener)
             .addOnFailureListener(listener);
       }

@@ -1,6 +1,7 @@
 package com.github.alokagrawal8.rxfirebase.authentication;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import rx.Observable;
@@ -20,8 +21,8 @@ final class OnCompleteListenerImpl<T> implements OnSuccessListener<T>, OnFailure
     return subject;
   }
 
-  @Override public void onSuccess(@NonNull final T t) {
-    if (!(t instanceof Void)) subject.onNext(t);
+  @Override public void onSuccess(@Nullable final T t) {
+    if (!(t instanceof Void || t == null)) subject.onNext(t);
     subject.onCompleted();
   }
 
