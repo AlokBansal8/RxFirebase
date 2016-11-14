@@ -14,7 +14,7 @@ To be added
 #### Gradle
 Add the following line to your build.gradle file.
 ```groovy
-compile 'com.github.alokagrawal8.rxfirebase:rx-firebase:0.2.0@aar'
+compile 'com.github.alokagrawal8.rxfirebase:rx-firebase:0.3.0@aar'
 ```
 
 ## License

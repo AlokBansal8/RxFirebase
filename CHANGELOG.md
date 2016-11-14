@@ -1,6 +1,16 @@
-# rx-database Releases
+# rx-firebase Releases
 
-### Version 0.2.0 - November 13th 2016
+## Version 0.3.0 - November 14th 2016
+
+* RxJava wrapper for FirebaseAuth functions have been added.
+### Download
+#### Gradle
+Add the following line to dependencies of your build.gradle file.
+```groovy
+compile 'com.github.alokagrawal8.rxfirebase:rx-firebase:0.3.0@aar'
+```
+
+## Version 0.2.0 - November 13th 2016
 
 * Breaking changes - all the previous public apis have been broken.
 * RxDatabase class now have public static methods returning Observables.
@@ -12,7 +22,7 @@ Add the following line to dependencies of your build.gradle file.
 compile 'com.github.alokagrawal8.rxfirebase:rx-firebase:0.2.0@aar'
 ```
 
-### Version 0.1.0 - October 26th 2016
+## Version 0.1.0 - October 26th 2016
 
 * Using version 9.6.1 of Firebase sdk.
 * Added RxDatabase to the public API which is Rx wrapper for FirebaseDatabase class in Firebase Realtime Database sdk.
