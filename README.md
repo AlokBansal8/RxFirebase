@@ -5,10 +5,52 @@
 [![Download](https://api.bintray.com/packages/alokbansal8/maven/RxFirebase/images/download.svg)](https://bintray.com/alokbansal8/maven/RxFirebase/_latestVersion)
 
 
-RxJava wrapper for Firebase for Android
+RxJava wrapper for Firebase for Android.
+This library allow you to use Observable model of RxJava with Firebase instead of all the different kind of listeners.
+
+Currently, the library supports following from the Firebase Suite:
+- Firebase Realtime Database
+- Firebase Authentication.
 
 ## Usage
-To be added
+Setup the Firebase project and SDK as per the [docs](https://firebase.google.com/docs/android/setup).
+
+Use [RxDatabase](rx-firebase/src/main/java/com/github/alokagrawal8/rxfirebase/database/RxDatabase.java) and [RxAuthentication](rx-firebase/src/main/java/com/github/alokagrawal8/rxfirebase/authentication/RxAuthentication.java) classes to get the RxJava equivalent for similar APIs in official library.
+Both the classes have ``public static`` methods for such tasks.
+#### Show me the code
+###### Write data
+```java
+RxDatabase.setValue(databaseReference, value)
+          .subscribe(isSuccessful -> Log.v(TAG, "Write operation: " + isSuccessful));
+```
+###### Read data
+```java
+RxDatabase.getValueEventListener(databaseReference)
+          .subscribe(dataSnapshot -> {
+            // Do Something
+          }, e -> Log.e(TAG, e.getMessage(), e));
+
+RxDatabase.getChildEventListener(databaseReference)
+          .subscribe(childEvent -> {
+            // Do Something
+            // Notice ChildEvent object instead of DataSnapshot type
+          }, e -> Log.e(TAG, e.getMessage(), e))
+```
+###### Authenticate
+```java
+RxAuthentication.getAuthListener(FirebaseAuth.getInstance())
+          .subscribe(auth -> {
+            FirebaseUser user = auth.getCurrentUser();
+            if (user != null) {
+              // User is signed in
+              Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+            } else {
+              // User is signed out
+              Log.d(TAG, "onAuthStateChanged:signed_out");
+            }
+            // ...
+          });
+```
 
 ## Download
 #### Gradle
